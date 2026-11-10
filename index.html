@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MINTU FLY ROBOT GAME - Made by Rimon</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#111;font-family:sans-serif;overflow:hidden}
+#top{background:#2d3436;color:#fff;display:flex;justify-content:space-between;padding:10px;font-weight:900;font-size:14px}
+#top span{color:#fdcb6e}
+#game{width:100%;height:calc(100vh - 150px);background:linear-gradient(180deg,#2d9CDB,#7EC8FF 50%,#FFD93D);position:relative;overflow:hidden}
+.cloud{position:absolute;background:#fff;border-radius:50px;padding:4px 14px;font-size:22px}
+.building{position:absolute;bottom:0;background:#2d3436;border:2px solid #fff;border-bottom:none;border-radius:10px 10px 0 0;color:#fff;font-weight:900;text-align:center;padding-top:10px;font-size:12px}
+.win{width:22px;height:22px;background:#FFD93D;margin:5px auto;border-radius:4px}
+#mintu{position:absolute;left:30px;bottom:120px;width:70px;height:85px;z-index:20;transition:all .4s;text-align:center}
+.cape{width:70px;height:45px;background:#ff4757;border-radius:10px;position:absolute;top:25px;z-index:-1}
+.head{width:50px;height:48px;background:#FFE3C2;border:3px solid #2d3436;border-radius:50%;margin:auto;display:flex;align-items:center;justify-content:center;font-size:24px}
+.body2{width:50px;height:40px;background:#2d6fd6;border:3px solid #2d3436;border-radius:10px;margin:-2px auto 0;display:flex;align-items:center;justify-content:center;color:#FFD93D;font-weight:900;font-size:20px}
+.robot{position:absolute;bottom:0;width:65px;height:80px;z-index:15;text-align:center}
+.rhead{width:45px;height:38px;background:#dfe6e9;border:3px solid #2d3436;border-radius:10px;margin:auto;display:flex;align-items:center;justify-content:center;font-size:22px}
+.rbody{width:48px;height:38px;background:#e17055;border:3px solid #2d3436;border-radius:8px;margin:auto;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:11px}
+.robot2 .rbody{background:#00b894}
+#msg{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.85);color:#fff;padding:15px 20px;border-radius:16px;font-weight:900;font-size:18px;text-align:center;z-index:50;display:none}
+#controls{display:flex;gap:8px;padding:8px;background:#2d3436}
+.btn{flex:1;padding:16px 5px;border-radius:14px;border:none;font-weight:900;font-size:16px;color:#fff}
+#startBtn{background:#fdcb6e;color:#2d3436;width:100%;padding:14px;font-size:18px;border:none;border-radius:12px;font-weight:900}
+</style>
+</head>
+<body>
+<div id="top"><div>🏆 স্কোর: <span id="score">0</span></div><div>❤️ <span id="life">3</span></div><div>🦸 MINTU SUPERMAN</div></div>
+<div id="game">
+<div class="cloud" style="top:20px;left:10%">☁️</div><div class="cloud" style="top:60px;left:60%">☁️</div>
+<div class="building" style="left:0;width:90px;height:180px"><div class="win"></div><div class="win"></div>🏢</div>
+<div class="building" style="left:150px;width:100px;height:260px"><div class="win"></div><div class="win"></div>🏢 বড়</div>
+<div class="building" style="left:320px;width:95px;height:200px"><div class="win"></div>🏢</div>
+<div class="building" style="left:480px;width:110px;height:320px"><div class="win"></div><div class="win"></div><div class="win"></div>🏢 সবচেয়ে বড়</div>
+<div style="position:absolute;left:190px;bottom:300px;font-size:28px">⭐</div>
+<div style="position:absolute;left:360px;bottom:240px;font-size:28px">⭐</div>
+<div style="position:absolute;left:520px;bottom:360px;font-size:28px">💎</div>
+<div id="mintu"><div class="cape"></div><div class="head">🦸</div><div class="body2">S</div><div style="background:#fff;font-weight:900;font-size:10px;border-radius:10px">MINTU</div></div>
+<div class="robot" id="robot1" style="left:260px"><div class="rhead">🤖</div><div class="rbody">ROBO-1</div></div>
+<div class="robot robot2" id="robot2" style="left:520px"><div class="rhead">🦾</div><div class="rbody">ROBO-2</div></div>
+<div id="msg"></div>
+</div>
+<div id="controls">
+<button class="btn" style="background:#FF6B6B" onclick="doJump()">⬆️ লাফ!</button>
+<button class="btn" style="background:#4D96FF" onclick="doFly()">🦸 উড়ো!</button>
+<button class="btn" style="background:#00b894" onclick="doFight()">🥊 মারো!</button>
+</div>
+<div style="padding:8px;background:#2d3436"><button id="startBtn" onclick="startGame()">▶️ গেম শুরু করো!</button></div>
+<script>
+let score=0,pos=120,gameOn=false;
+let mintu=document.getElementById('mintu');
+function showMsg(t){let m=document.getElementById('msg');m.innerHTML=t;m.style.display='block';setTimeout(()=>m.style.display='none',2000);}
+function doJump(){if(!gameOn)return;pos+=90;mintu.style.bottom=pos+'px';setTimeout(()=>{pos=120;mintu.style.bottom=pos+'px';},450);score+=5;document.getElementById('score').innerText=score;showMsg('⭐ তারা পাইছো! +5');}
+function doFly(){if(!gameOn)return;mintu.style.bottom='320px';mintu.style.left='200px';showMsg('🦸 মিন্টু উড়ছে! সুপারম্যান!');setTimeout(()=>{mintu.style.bottom='120px';mintu.style.left='30px';},1800);score+=10;document.getElementById('score').innerText=score;}
+function doFight(){if(!gameOn)return;showMsg('💥 ধুম! রোবটকে মারছে! 🥊<br>মিন্টু জিতছে!');score+=20;document.getElementById('score').innerText=score;if(score>100)showMsg('🏆 তুমি জিতে গেছো রিমন! 🏆');}
+function startGame(){gameOn=true;score=0;document.getElementById('score').innerText='0';showMsg('🎮 গেম শুরু!<br>বিল্ডিং এর উপর লাফ দাও!<br>উড়ো! রোবটকে মারো!');}
+</script>
+</body>
+  </html>
